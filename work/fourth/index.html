@@ -63,8 +63,6 @@
     menuChildren.hover(function() {
       var num = $menu.children().index();
 
-      console.log($(this).children());
-      console.log($(this).find('ul'));
       //chirdrenはfirst-childを参照するのに対して、findは子要素全体を探索する
       $(this).find('ul').stop().slideDown();
     }, function() {
