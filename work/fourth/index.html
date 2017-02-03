@@ -56,6 +56,22 @@
 // .next() 要素の隣の要素を取得します。
 // .children() 要素の子要素を取得します。
 // .stop() 現在動作中のアニメーション処理を全て中止します。
+  $(function() {
+    var $menu = $('.menu__list');
+    var menuChildren = $menu.children();
+
+    menuChildren.hover(function() {
+      var num = $menu.children().index();
+
+      console.log($(this).children());
+      console.log($(this).find('ul'));
+      //chirdrenはfirst-childを参照するのに対して、findは子要素全体を探索する
+      $(this).find('ul').stop().slideDown();
+    }, function() {
+      $(this).find('ul').stop().slideUp();
+    })
+  });
+
 </script>
 </body>
 </html>
