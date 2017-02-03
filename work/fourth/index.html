@@ -61,8 +61,6 @@
     var menuChildren = $menu.children();
 
     menuChildren.hover(function() {
-      var num = $menu.children().index();
-
       $(this).children().next().stop().slideDown();
     }, function() {
       $(this).children().next().stop().slideUp();
