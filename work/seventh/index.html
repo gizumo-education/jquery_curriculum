@@ -47,7 +47,7 @@ $(function() {
 
     if (data === 'prev' && num === 0) {
       num = 3;
-    } else if(data === 'next' && num === 3) {
+    } else if(data === 'next' && num === slidLength - 1) {
       num = 0;
     } else if (data === 'prev') {
       num -= 1;
