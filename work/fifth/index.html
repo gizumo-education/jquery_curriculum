@@ -100,25 +100,22 @@
   $(function() {
     var $category = $('.select');
     var $type = $('.list');
-    var typeList = $type.find('li');
+    var typeListItem = $type.find('li');
 
     $category.on('change', function() {
       var value = $(this).val();
 
-      switch (value) {
-        case 'css':
-        case 'php':
-        case 'javascript':
-        case 'python':
-        case 'scala':
-        case 'ruby':
-          typeList.each(function() {
-            $(this).data('category-type') == value ? $(this).show() : $(this).hide();
-          });
-          break;
-        default:
-          typeList.show();
-      }
+      typeListItem.each(function() {
+        var dataType = $(this).data('category-type');
+
+        if (value === dataType) {
+          $(this).show();
+        } else if(value === 'all') {
+          $(this).show();
+        } else {
+          $(this).hide();
+        }
+      })
     });
   });
 </script>
