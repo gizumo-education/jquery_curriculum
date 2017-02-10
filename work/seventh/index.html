@@ -36,25 +36,34 @@
 // .length 要素の個数を取得します。
 $(function() {
   var $slid = $('.slider-list');
-  var $btn = $('.slider-ctrl-btn');
+  var $prev = $('.is-prev');
+  var $next = $('.is-next');
   var slidListItem = $slid.find('li');
   var slidItemWidth = slidListItem.width();
   var slidLength = slidListItem.length;
   var num = 0;
+  var maxNum = slidLength - 1;
 
-  $btn.on('click', function() {
-    var data = $(this).data('ctrl');
+  function slider() {
+    var slidLevel = slidItemWidth * num;
 
-    if (data === 'prev' && num === 0) {
-      num = 3;
-    } else if(data === 'next' && num === slidLength - 1) {
+    $slid.animate({left: -slidLevel}, 500)
+  };
+  $prev.on('click', function() {
+    if (num === 0) {
+      num = maxNum;
+    } else {
+      num--;
+    };
+    slider();
+  });
+  $next.on('click', function() {
+    if (num < maxNum) {
+     num++;
+    } else {
       num = 0;
-    } else if (data === 'prev') {
-      num -= 1;
-    } else if(data === 'next') {
-      num += 1;
-    }
-    $slid.animate({left: slidItemWidth * -num}, 500)
+    };
+    slider();
   });
 });
 </script>
