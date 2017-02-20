@@ -43,7 +43,7 @@
 // .fadeIn() 要素をフェードインさせる。
 // .fadeOut() 要素をフェードアウトさせる。
 $(function () {
-  var $document = $(document);
+  var $window = $(window);
   var $body = $('body');
   var $menu = $('.menu__btn');
   var $title = $('.title');
@@ -64,7 +64,8 @@ $(function () {
   $toTopBtn.on('click', function() {
     $body.animate({ scrollTop: 0 })
   });
-  $document.on('scroll', function() {
+  $window.on('scroll', function() {
+
     if ($(this).scrollTop() > 100) {
       $toTopBtn.fadeIn();
     } else {
