@@ -71,11 +71,34 @@ $(function() {
   var $message = $('.message');
   var $itemLists = $('.lists');
 
+  function ajaxProcess(keyWord) {
+    var ajaxData = {
+      type: 'GET',
+      url: 'https://app.rakuten.co.jp/services/api/BooksTotal/Search/20130522',
+      datatype: 'json',
+      data: {
+        applicationId: '1019399324990976605',
+        booksGenreId: '001',
+        keyword: keyWord,
+        hits: 20
+      }
+    };
+
+    $.ajax(
+      ajaxData
+    ).done(function(data) {
+      doneProcess(data);
+    }).fail(function(data) {
+      $message.text('');
+      $message.append('ネットワークエラー<br>しばらく待ってから検索して下さい。');
+    });
+  };
   function doneProcess(data) {
     var hitItems = data.Items.length;
 
     if (hitItems === 0) {
-      $message.html('検索結果がみつかりませんでした。<br>別のキーワードで検索して下さい。');
+      $message.text('');
+      $message.append('検索結果がみつかりませんでした。<br>別のキーワードで検索して下さい。');
     } else {
       $message.text('');
       $('.lists__item').remove();
@@ -101,33 +124,13 @@ $(function() {
         $itemLists.append(template);
       });
     }
-  }
-  function ajaxProcess(keyWord) {
-    var ajaxData = {
-      type: 'GET',
-      url: 'https://app.rakuten.co.jp/services/api/BooksTotal/Search/20130522',
-      datatype: 'json',
-      data: {
-        applicationId: '1019399324990976605',
-        booksGenreId: '001',
-        keyword: keyWord,
-        hits: 20
-      }
-    };
-
-    $.ajax(
-      ajaxData
-    ).done(function(data) {
-      doneProcess(data);
-    }).fail(function(data) {
-      $message.html('ネットワークエラー<br>しばらく待ってから検索して下さい。');
-    });
   };
   $searchBtn.on('click', function() {
     var keyWord = $input.val();
 
     if (keyWord === '') {
-      $message.text('キーワードを入力してください。');
+      $message.text('');
+      $message.append('キーワードを入力してください。');
     } else {
     ajaxProcess(keyWord);
     };
