@@ -34,6 +34,34 @@
 // .data() 要素のdata属性を取得します。
 // .width() 要素の幅を取得します。
 // .length 要素の個数を取得します。
+$(function() {
+  var $slid = $('.slider-list');
+  var $prev = $('.is-prev');
+  var $next = $('.is-next');
+  var slidListItem = $slid.find('li');
+  var slidItemWidth = slidListItem.width();
+  var slidLength = slidListItem.length;
+  var num = 0;
+  var maxNum = slidLength - 1;
+
+
+  function slider() {
+    if (num < 0) {
+      num = maxNum;
+    } else if (num >= slidLength) {
+      num = 0;
+    }
+    $slid.animate({left: -slidItemWidth * num}, 500)
+  };
+  $prev.on('click', function() {
+      num--;
+    slider();
+  });
+  $next.on('click', function() {
+    num++;
+    slider();
+  });
+});
 </script>
 </body>
 </html>

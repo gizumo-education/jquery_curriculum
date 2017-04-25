@@ -21,6 +21,8 @@
       </div>
       <button id="js-search-button" class="search__btn">検索する</button>
     </div>
+    <div class="message">
+    </div>
     <ul class="lists"></ul>
   </div>
 </div>
@@ -63,7 +65,77 @@
   // }).done(function(data) {
   //   // この中にデータ取得後の動きを記述していきます。
   // });
-//
+$(function() {
+  var $input = $('.search__text__input');
+  var $searchBtn = $('.search__btn');
+  var $message = $('.message');
+  var $itemLists = $('.lists');
+
+  function ajaxProcess(keyWord) {
+    var ajaxData = {
+      type: 'GET',
+      url: 'https://app.rakuten.co.jp/services/api/BooksTotal/Search/20130522',
+      datatype: 'json',
+      data: {
+        applicationId: '1019399324990976605',
+        booksGenreId: '001',
+        keyword: keyWord,
+        hits: 20
+      }
+    };
+
+    $.ajax(
+      ajaxData
+    ).done(function(data) {
+      doneProcess(data);
+    }).fail(function(data) {
+      $message.text('');
+      $message.append('ネットワークエラー<br>しばらく待ってから検索して下さい。');
+    });
+  };
+  function doneProcess(data) {
+    var hitItems = data.Items.length;
+
+    if (hitItems === 0) {
+      $message.text('');
+      $message.append('検索結果がみつかりませんでした。<br>別のキーワードで検索して下さい。');
+    } else {
+      $message.text('');
+      $('.lists__item').remove();
+      data.Items.forEach(function(Item) {
+        var getItem = Item.Item;
+        var author = getItem.author;
+        var publish = getItem.publisherName;
+        var title = getItem.title;
+        var imgs = getItem.largeImageUrl;
+        var itemUrl = getItem.itemUrl;
+        var template =
+          '<li class="lists__item">'+
+            '<div class="lists__item__inner">'+
+              '<a href="'+ itemUrl +'" class="lists__item__link" target="_blank">'+
+                '<img src="'+ imgs +'" class="lists__item__img" alt="'+ title +'">'+
+                '<p class="lists__item__detail">作品名：'+ title +'</p>'+
+                '<p class="lists__item__detail">作者　：'+ author +'</p>'+
+                '<p class="lists__item__detail">出版社：'+ publish +'</p>'+
+              '</a>'+
+            '</div>'+
+          '</li>';
+
+        $itemLists.append(template);
+      });
+    }
+  };
+  $searchBtn.on('click', function() {
+    var keyWord = $input.val();
+
+    if (keyWord === '') {
+      $message.text('');
+      $message.append('キーワードを入力してください。');
+    } else {
+    ajaxProcess(keyWord);
+    };
+  });
+});
 </script>
 </body>
 </html>
